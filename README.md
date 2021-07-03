@@ -10,13 +10,6 @@
 <br>
 
 
-## Credits:
-* This person helped: <a href="https://example.com/">@Person</a>
-* This is reference material: <a href="https://example.com/">Example Site</a>
-<br>
-<br>
-
-
 ## Contact:
 * For serious inquiries, reach me through mail at:<a href="mailto:dev@sla-ppy.com"> dev@sla-ppy.com</a><br>
 * Add me over Discord: <a href="https://discord.com/users/545219738398097408">sla-ppy#2023</a><br>
