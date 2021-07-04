@@ -34,6 +34,33 @@ void scoreRolls() {
                                               {"Chance",              13}
     };
 
+
+    // HOW TO SOLVE: the way im gonna solve it is check if the conditions apply by the rules, then only render the scoring options which are eligable!
+    //
+    // UPPER SECTION:
+    // totalOfAces  -> numOfAces * 1
+    // totalOfTwos  -> numOfTwos * 2
+    // totalOfThrees  -> numOfThrees * 3
+    // totalOfFours  -> numOfFours * 4
+    // totalOfFives  -> numOfFives * 5
+    // totalOfSixes  -> numOfSixes * 6
+    //
+    // LOWER SECTION:
+    // threeOfAKind  ->  if (any of the numOf values are 3 (2,2,2,1,5)) { multiply with the numOf value }
+    // fourOfAKind  ->  if (any of the numOf values are 4 (3,3,3,3,2)) { multiply with the numOf value }
+    // fullHouse  ->  if (one of numOf includes 3 and another numOf includes 2 of the same values (5,5,5,2,2)) {25 points}
+    //
+    // smallStraight  ->  if (4 of the dicerolls have a sequential pattern like: (1,2,3,4,#)
+    //                                                                           (2,3,4,5,#)
+    //                                                                           (3,4,5,6,#) where # is any value) {30 points}
+    //
+    // largeStraight  ->  if (5 of the dice rolls have a sequential pattern like: (1,2,3,4,5)
+    //                                                                            (2,3,4,5,6) { 40 }
+    //
+    // gotYahtzee  ->  if (all dice show the exact same number: (1,1,1,1,1) {first YAHTZEE is 50 points}
+    // gotChance  ->  if (you dont want to score anything else) {total of all the rolled dices}
+
+
     for (auto &it : scoreMap) {
         std::cout << it.first << '\n';
     }
