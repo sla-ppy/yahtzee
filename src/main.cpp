@@ -3,6 +3,8 @@
 #include <array>
 #include <map>
 
+#include "rules.h"
+
 int randGen(int max) {
     std::random_device rd;  // will be used to obtain a seed for the random number engine
     std::mt19937 gen(rd()); // standard mersenne_twister_engine seeded with rd()
@@ -34,33 +36,6 @@ void scoreRolls() {
                                               {"Chance",              13}
     };
 
-
-    // HOW TO SOLVE: the way im gonna solve it is check if the conditions apply by the rules, then only render the scoring options which are eligable!
-    //
-    // UPPER SECTION:
-    // totalOfAces  -> numOfAces * 1
-    // totalOfTwos  -> numOfTwos * 2
-    // totalOfThrees  -> numOfThrees * 3
-    // totalOfFours  -> numOfFours * 4
-    // totalOfFives  -> numOfFives * 5
-    // totalOfSixes  -> numOfSixes * 6
-    //
-    // LOWER SECTION:
-    // threeOfAKind  ->  if (any of the numOf values are 3 (2,2,2,1,5)) { multiply with the numOf value }
-    // fourOfAKind  ->  if (any of the numOf values are 4 (3,3,3,3,2)) { multiply with the numOf value }
-    // fullHouse  ->  if (one of numOf includes 3 and another numOf includes 2 of the same values (5,5,5,2,2)) {25 points}
-    //
-    // smallStraight  ->  if (4 of the dicerolls have a sequential pattern like: (1,2,3,4,#)
-    //                                                                           (2,3,4,5,#)
-    //                                                                           (3,4,5,6,#) where # is any value) {30 points}
-    //
-    // largeStraight  ->  if (5 of the dice rolls have a sequential pattern like: (1,2,3,4,5)
-    //                                                                            (2,3,4,5,6) { 40 }
-    //
-    // gotYahtzee  ->  if (all dice show the exact same number: (1,1,1,1,1) {first YAHTZEE is 50 points}
-    // gotChance  ->  if (you dont want to score anything else) {total of all the rolled dices}
-
-
     for (auto &it : scoreMap) {
         std::cout << it.first << '\n';
     }
@@ -70,22 +45,22 @@ int main() {
 
     // INIT
     const int dNumb{5};
-    const int rollNumb{3};
 
     std::array<int, dNumb> dRolls{0};
 
     int numOfAces{0}, numOfTwos{0}, numOfThrees{0}, numOfFours{0}, numOfFives{0}, numOfSixes{0};
 
     // 1. roll dices(3 turns)
-    for (int i = 0; i != rollNumb; ++i) {
+    for (int i = 0; i != 3; ++i) {
         std::cout << "-------------------" << '\n';
         std::cout << "| Rolls of turn " << i + 1 << " |" << '\n';
         std::cout << "-------------------" << '\n';
-
         // // 2. generate rolls
+        std::cout << "| ";
         for (int &dRoll : dRolls) {
             dRoll = randGen(6);
 
+            std::cout << " " << dRoll << " ";
             // evaluate, and group up rolls by value
             if (dRoll == 1) {
                 numOfAces++;
@@ -103,9 +78,14 @@ int main() {
                 std::cerr << "An error occurred while evaluating rolls into groups by value" << std::endl;
             }
         }
+        std::cout << " |";
+        std::cout << '\n';
+        std::cout << "-------------------" << '\n';
 
         // 3. display rolls
         std::cout << '\n';
+        std::cout << "===================" << '\n';
+        std::cout << "      " << "Totals:" << '\n';
         std::cout << "===================" << '\n';
         for (auto it = dRolls.begin(); it != dRolls.end(); it++) {
             if (numOfAces != 0) {
@@ -127,6 +107,29 @@ int main() {
                 std::cout << "Sixes(6) * " << numOfSixes << '\n';
             }
             std::cout << "===================" << '\n';
+
+            // TESTING:
+            std::cout << '\n';
+            std::cout << "UPPER SECTION:" << '\n';
+            std::cout << "###################" << '\n';
+            // TODO: continue doing this to get the responsible, show only when eligable rule
+            if (totalOfAces(numOfAces) != 0) {
+                std::cout << "Total Of Aces: " << totalOfAces(numOfAces) << '\n';
+            }
+            std::cout << "Total Of Twos: " << totalOfTwos(numOfTwos) << '\n';
+            std::cout << "Total Of Threes: " << totalOfThrees(numOfThrees) << '\n';
+            std::cout << "Total Of Fours: " << totalOfFours(numOfFours) << '\n';
+            std::cout << "Total Of Fives: " << totalOfFives(numOfFives) << '\n';
+            std::cout << "Total Of Sixes: " << totalOfSixes(numOfSixes) << '\n';
+            std::cout << "###################" << '\n';
+
+
+            std::cout << '\n';
+            std::cout << "UPPER SECTION:" << '\n';
+            std::cout << "###################" << '\n';
+            //std::cout << "Three Of A Kind: " << threeOfAKind(dRolls, numOfAces, numOfTwos, numOfThrees, numOfFours, numOfFives, numOfSixes) << '\n';
+
+            std::cout << "###################" << '\n';
 
             // 4. move on to scoring
             std::cout << '\n';
