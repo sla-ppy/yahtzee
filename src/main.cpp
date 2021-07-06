@@ -1,7 +1,6 @@
 #include <iostream>
 #include <random>
 #include <array>
-#include <map>
 
 #include "rules.h"
 
@@ -15,32 +14,6 @@ int randGen(int max) {
     return randResult;
 }
 
-void scoreRolls() {
-    // TODO: after watching this video: https://youtu.be/sQM7sN4NPz8 it became evident that my thinking was wrong here is how to continue with the program:
-    // TODO: we dont segment upper and lower, they are a whole list.
-    // TODO: we first check the lower section to see if we have any specific rolls on there, after each roll
-    // TODO: then if we dont, we would either re-roll, or we move to the upper section and add scores there
-
-    std::map<std::string, const int> scoreMap{{"Total of Aces(ones)", 1},
-                                              {"Total Of Twos",       2},
-                                              {"Total Of Threes",     3},
-                                              {"Total Of Fours",      4},
-                                              {"Total Of Fives",      5},
-                                              {"Total Of Sixes",      6},
-                                              {"3 Of A Kind",         7},
-                                              {"4 Of A Kind",         8},
-                                              {"Full House",          9},
-                                              {"Small Straight",      10},
-                                              {"Large Straight",      11},
-                                              {"YAHTZEE",             12},
-                                              {"Chance",              13}
-    };
-
-    for (auto &it : scoreMap) {
-        std::cout << it.first << '\n';
-    }
-}
-
 int main() {
 
     // INIT
@@ -50,44 +23,60 @@ int main() {
 
     int numOfAces{0}, numOfTwos{0}, numOfThrees{0}, numOfFours{0}, numOfFives{0}, numOfSixes{0};
 
-    // 1. roll dices(3 turns)
-    for (int i = 0; i != 3; ++i) {
-        std::cout << "-------------------" << '\n';
-        std::cout << "| Rolls of turn " << i + 1 << " |" << '\n';
-        std::cout << "-------------------" << '\n';
-        // // 2. generate rolls
-        std::cout << "| ";
-        for (int &dRoll : dRolls) {
-            dRoll = randGen(6);
+    int turnCounter{0};
 
-            std::cout << " " << dRoll << " ";
-            // evaluate, and group up rolls by value
-            if (dRoll == 1) {
-                numOfAces++;
-            } else if (dRoll == 2) {
-                numOfTwos++;
-            } else if (dRoll == 3) {
-                numOfThrees++;
-            } else if (dRoll == 4) {
-                numOfFours++;
-            } else if (dRoll == 5) {
-                numOfFives++;
-            } else if (dRoll == 6) {
-                numOfSixes++;
-            } else {
-                std::cerr << "An error occurred while evaluating rolls into groups by value" << std::endl;
-            }
-        }
-        std::cout << " |";
-        std::cout << '\n';
+    bool gameIsRunning{true};
+
+    // 1. we roll dices / take turns 3 times
+    while (gameIsRunning) {
+
         std::cout << "-------------------" << '\n';
+        std::cout << "| Rolls of turn " << turnCounter + 1 << " |" << '\n';
+        std::cout << "-------------------" << '\n';
+        turnCounter++;
+
+        bool generatingRolls{true};
+
+        // 2. generate rolls
+        while (generatingRolls) {
+            std::cout << "| ";
+            for (int &dRoll : dRolls) {
+                dRoll = randGen(6);
+
+                std::cout << " " << dRoll << " ";
+                // evaluate, and group up rolls by value
+                if (dRoll == 1) {
+                    numOfAces++;
+                } else if (dRoll == 2) {
+                    numOfTwos++;
+                } else if (dRoll == 3) {
+                    numOfThrees++;
+                } else if (dRoll == 4) {
+                    numOfFours++;
+                } else if (dRoll == 5) {
+                    numOfFives++;
+                } else if (dRoll == 6) {
+                    numOfSixes++;
+                } else {
+                    std::cerr << "An error occurred while evaluating rolls into groups by value" << std::endl;
+                }
+            }
+            std::cout << " |";
+            std::cout << '\n';
+            std::cout << "-------------------" << '\n';
+
+            generatingRolls = false;
+        }
 
         // 3. display rolls
-        std::cout << '\n';
-        std::cout << "===================" << '\n';
-        std::cout << "      " << "Totals:" << '\n';
-        std::cout << "===================" << '\n';
-        for (auto it = dRolls.begin(); it != dRolls.end(); it++) {
+        bool displayingRolls{true};
+
+        while (displayingRolls) {
+            std::cout << '\n';
+            std::cout << "===================" << '\n';
+            std::cout << "      " << "Totals:" << '\n';
+            std::cout << "===================" << '\n';
+
             if (numOfAces != 0) {
                 std::cout << "Aces(1) * " << numOfAces << '\n';
             }
@@ -108,30 +97,40 @@ int main() {
             }
             std::cout << "===================" << '\n';
 
-            // TESTING:
+            // 4. use rules on roles
             std::cout << '\n';
             std::cout << "UPPER SECTION:" << '\n';
             std::cout << "###################" << '\n';
-            // TODO: continue doing this to get the responsible, show only when eligable rule
-            if (totalOfAces(numOfAces) != 0) {
-                std::cout << "Total Of Aces: " << totalOfAces(numOfAces) << '\n';
-            }
-            std::cout << "Total Of Twos: " << totalOfTwos(numOfTwos) << '\n';
-            std::cout << "Total Of Threes: " << totalOfThrees(numOfThrees) << '\n';
-            std::cout << "Total Of Fours: " << totalOfFours(numOfFours) << '\n';
-            std::cout << "Total Of Fives: " << totalOfFives(numOfFives) << '\n';
-            std::cout << "Total Of Sixes: " << totalOfSixes(numOfSixes) << '\n';
+            totalOfAces(numOfAces);
+            totalOfTwos(numOfTwos);
+            totalOfThrees(numOfThrees);
+            totalOfFours(numOfFours);
+            totalOfFives(numOfFives);
+            totalOfSixes(numOfSixes);
             std::cout << "###################" << '\n';
 
 
             std::cout << '\n';
-            std::cout << "UPPER SECTION:" << '\n';
+            std::cout << "LOWER SECTION:" << '\n';
             std::cout << "###################" << '\n';
-            //std::cout << "Three Of A Kind: " << threeOfAKind(dRolls, numOfAces, numOfTwos, numOfThrees, numOfFours, numOfFives, numOfSixes) << '\n';
-
+            threeOfAKind(numOfAces, numOfTwos, numOfThrees, numOfFours, numOfFives, numOfSixes);
+            fourOfAKind(numOfAces, numOfTwos, numOfThrees, numOfFours, numOfFives, numOfSixes);
+            fullHouse(numOfAces, numOfTwos, numOfThrees, numOfFours, numOfFives, numOfSixes);
+            smallStraight(numOfAces, numOfTwos, numOfThrees, numOfFours, numOfFives, numOfSixes);
+            largeStraight(numOfAces, numOfTwos, numOfThrees, numOfFours, numOfFives, numOfSixes);
+            // TODO: YAHTZEE!!! counter, first one is 50 points, second is 100 points, etc.
+            gotYahtzee(numOfAces, numOfTwos, numOfThrees, numOfFours, numOfFives, numOfSixes);
+            gotChance(numOfAces, numOfTwos, numOfThrees, numOfFours, numOfFives, numOfSixes);
             std::cout << "###################" << '\n';
+            std::cout << '\n';
 
-            // 4. move on to scoring
+            // TODO: re-rolling individual dices!!!
+
+            displayingRolls = false;
+        }
+
+        // 5. continue when player is done re-rolling, and we still have rounds left
+        if (turnCounter < 3) {
             std::cout << '\n';
             std::cout << "Enter 'x' to continue!" << '\n';
 
@@ -139,15 +138,32 @@ int main() {
             std::cin >> usrInput;
 
             if (usrInput == 'x' || usrInput == 'X') {
-                scoreRolls();
+                // 6. reset for next round
+                numOfAces = 0;
+                numOfTwos = 0;
+                numOfThrees = 0;
+                numOfFours = 0;
+                numOfFives = 0;
+                numOfSixes = 0;
+
+                for (int i = 0; i < 5; ++i) {
+                    std::cout << '\n';
+                }
+
             } else {
                 std::cout << "I said, enter 'x'! >:(" << '\n';
             }
+        } else if (turnCounter == 3) {
+            // 7. terminate after 3rd round
+            // TODO: total all the scores, store round scores somehow probaly into just integers
+            gameIsRunning = false;
 
-            std::cout << '\n';
+            for (int i = 0; i < 5; ++i) {
+                std::cout << '\n';
+            }
+            std::cout << "The game is finished!";
         }
     }
 
-    // DEINIT
     return 0;
 }
