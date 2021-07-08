@@ -155,7 +155,7 @@ int main() {
             }
         } else if (turnCounter == 3) {
             // 7. terminate after 3rd round
-            // TODO: total all the scores, store round scores somehow probaly into just integers
+            // TODO: total all the scores, store round scores somehow probably into just integers
             gameIsRunning = false;
 
             for (int i = 0; i < 5; ++i) {

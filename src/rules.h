@@ -74,50 +74,31 @@ fourOfAKind(int &numOfAces, int &numOfTwos, int &numOfThrees, int &numOfFours, i
 
 inline void
 fullHouse(int &numOfAces, int &numOfTwos, int &numOfThrees, int &numOfFours, int &numOfFives, int &numOfSixes) {
-    if (// 1 - #
-            (numOfAces == 3 && numOfTwos == 2)
-            || (numOfAces == 3 && numOfThrees == 2)
-            || (numOfAces == 3 && numOfFours == 2)
-            || (numOfAces == 3 && numOfFives == 2)
-            || (numOfAces == 3 && numOfSixes == 2)
-
-            // 2 - #
-            || (numOfTwos == 3 && numOfAces == 2)
-            || (numOfTwos == 3 && numOfThrees == 2)
-            || (numOfTwos == 3 && numOfFours == 2)
-            || (numOfTwos == 3 && numOfFives == 2)
-            || (numOfTwos == 3 && numOfSixes == 2)
-
-            // 3 - #
-            || (numOfThrees == 3 && numOfAces == 2)
-            || (numOfThrees == 3 && numOfTwos == 2)
-            || (numOfThrees == 3 && numOfFours == 2)
-            || (numOfThrees == 3 && numOfFives == 2)
-            || (numOfThrees == 3 && numOfSixes == 2)
-
-            // 4 - #
-            || (numOfFours == 3 && numOfAces == 2)
-            || (numOfFours == 3 && numOfTwos == 2)
-            || (numOfFours == 3 && numOfThrees == 2)
-            || (numOfFours == 3 && numOfFives == 2)
-            || (numOfFours == 3 && numOfSixes == 2)
-
-            // 5 - #
-            || (numOfFives == 3 && numOfAces == 2)
-            || (numOfFives == 3 && numOfTwos == 2)
-            || (numOfFives == 3 && numOfThrees == 2)
-            || (numOfFives == 3 && numOfFours == 2)
-            || (numOfFives == 3 && numOfSixes == 2)
-
-            // 6 - #
-            || (numOfSixes == 3 && numOfAces == 2)
-            || (numOfSixes == 3 && numOfTwos == 2)
-            || (numOfSixes == 3 && numOfThrees == 2)
-            || (numOfSixes == 3 && numOfFours == 2)
-            || (numOfSixes == 3 && numOfFives == 2)
-            ) {
-        int points{25};
-        std::cout << "Full House: " << points << '\n';
+    int points{25};
+    if (numOfAces == 3) {
+        if (numOfTwos == 2 || numOfThrees == 2 || numOfFours == 3 || numOfFives == 2 || numOfSixes == 2) {
+            std::cout << "Full House: " << points << '\n';
+        }
+    } else if (numOfTwos == 3) {
+        if (numOfAces == 2 || numOfThrees == 2 || numOfFours == 3 || numOfFives == 2 || numOfSixes == 2) {
+            std::cout << "Full House: " << points << '\n';
+        }
+    } else if (numOfThrees == 3) {
+        if (numOfAces == 2 || numOfTwos == 2 || numOfFours == 3 || numOfFives == 2 || numOfSixes == 2) {
+            std::cout << "Full House: " << points << '\n';
+        }
+    } else if (numOfFours == 3) {
+        if (numOfAces == 2 || numOfTwos == 2 || numOfThrees == 3 || numOfFives == 2 || numOfSixes == 2) {
+            std::cout << "Full House: " << points << '\n';
+        }
+    } else if (numOfFives == 3) {
+        if (numOfAces == 2 || numOfTwos == 2 || numOfThrees == 3 || numOfFours == 2 || numOfSixes == 2) {
+            std::cout << "Full House: " << points << '\n';
+        }
+    } else if (numOfSixes == 3) {
+        if (numOfAces == 2 || numOfTwos == 2 || numOfThrees == 3 || numOfFours == 2 || numOfFives == 2) {
+            std::cout << "Full House: " << points << '\n';
+        }
     }
 }
 
