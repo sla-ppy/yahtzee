@@ -40,6 +40,7 @@ int main() {
         // 2. generate rolls
         while (generatingRolls) {
             std::cout << "| ";
+
             for (int &dRoll : dRolls) {
                 dRoll = randGen(6);
 
@@ -67,6 +68,9 @@ int main() {
 
             generatingRolls = false;
         }
+
+        // for keeping scores
+        int totalOfAcesPoints{}, totalOfTwosPoints{}, totalOfThreesPoints{}, totalOfFoursPoints{}, totalOfFivesPoints{}, totalOfSixesPoints{}, threeOfAKindPoints{}, fourOfAKindPoints{}, fullHousePoints{}, smallStraightPoints{}, largeStraightPoints{}, yahtzeePoints{}, chancePoints{};
 
         // 3. display rolls
         bool displayingRolls{true};
@@ -101,38 +105,96 @@ int main() {
             std::cout << '\n';
             std::cout << "UPPER SECTION:" << '\n';
             std::cout << "###################" << '\n';
-            totalOfAces(numOfAces);
-            totalOfTwos(numOfTwos);
-            totalOfThrees(numOfThrees);
-            totalOfFours(numOfFours);
-            totalOfFives(numOfFives);
-            totalOfSixes(numOfSixes);
+            totalOfAcesPoints = totalOfAces(numOfAces);
+            totalOfTwosPoints = totalOfTwos(numOfTwos);
+            totalOfThreesPoints = totalOfThrees(numOfThrees);
+            totalOfFoursPoints = totalOfFours(numOfFours);
+            totalOfFivesPoints = totalOfFives(numOfFives);
+            totalOfSixesPoints = totalOfSixes(numOfSixes);
             std::cout << "###################" << '\n';
 
 
             std::cout << '\n';
             std::cout << "LOWER SECTION:" << '\n';
             std::cout << "###################" << '\n';
-            threeOfAKind(numOfAces, numOfTwos, numOfThrees, numOfFours, numOfFives, numOfSixes);
-            fourOfAKind(numOfAces, numOfTwos, numOfThrees, numOfFours, numOfFives, numOfSixes);
-            fullHouse(numOfAces, numOfTwos, numOfThrees, numOfFours, numOfFives, numOfSixes);
-            smallStraight(numOfAces, numOfTwos, numOfThrees, numOfFours, numOfFives, numOfSixes);
-            largeStraight(numOfAces, numOfTwos, numOfThrees, numOfFours, numOfFives, numOfSixes);
+            threeOfAKindPoints = threeOfAKind(numOfAces, numOfTwos, numOfThrees, numOfFours, numOfFives, numOfSixes);
+            fourOfAKindPoints = fourOfAKind(numOfAces, numOfTwos, numOfThrees, numOfFours, numOfFives, numOfSixes);
+            fullHousePoints = fullHouse(numOfAces, numOfTwos, numOfThrees, numOfFours, numOfFives, numOfSixes);
+            smallStraightPoints = smallStraight(numOfAces, numOfTwos, numOfThrees, numOfFours, numOfFives, numOfSixes);
+            largeStraightPoints = largeStraight(numOfAces, numOfTwos, numOfThrees, numOfFours, numOfFives, numOfSixes);
             // TODO: YAHTZEE!!! counter, first one is 50 points, second is 100 points, etc.
-            gotYahtzee(numOfAces, numOfTwos, numOfThrees, numOfFours, numOfFives, numOfSixes);
-            gotChance(numOfAces, numOfTwos, numOfThrees, numOfFours, numOfFives, numOfSixes);
+            yahtzeePoints = gotYahtzee(numOfAces, numOfTwos, numOfThrees, numOfFours, numOfFives, numOfSixes);
+            chancePoints = gotChance(numOfAces, numOfTwos, numOfThrees, numOfFours, numOfFives, numOfSixes);
             std::cout << "###################" << '\n';
             std::cout << '\n';
-
-            // TODO: re-rolling individual dices!!!
 
             displayingRolls = false;
         }
 
-        // 5. continue when player is done re-rolling, and we still have rounds left
+
+        // TODO: player can only roll 3 times all together!
+        // 5. re-roll if player wants to
+        char reRollInput{};
+        std::cout << "Do you want to re-roll any of the dices? (y/N)" << '\n';
+        std::cin >> reRollInput;
+
+        bool wantsReRoll{};
+
+        if (reRollInput == 'y' || reRollInput == 'Y') {
+            wantsReRoll = true;
+        } else if (reRollInput == 'n' || reRollInput == 'N') {
+            wantsReRoll = false;
+        }
+
+        while(wantsReRoll) {
+            std::cout << "You choose to re-roll." << '\n';
+            std::cout << '\n';
+
+            // TODO: need to figure out a better way for multiple inputs with this method, not sure how to proceed currently.
+            bool reRollFirst{false}, reRollSecond{false}, reRollThird{false}, reRollFourth{false}, reRollFifth{false};
+
+            std::cout << "Which dice would you like to re-roll? (1-5)" << '\n';
+            std::cin >> reRollFirst >> reRollSecond >> reRollThird >> reRollFourth >> reRollFifth;
+
+            // reroll specific rolls based on usr input
+            if (reRollFirst) {
+                dRolls[0] = randGen(6);
+            }
+            if (reRollSecond) {
+                dRolls[1] = randGen(6);
+            }
+            if (reRollThird) {
+                dRolls[2] = randGen(6);
+            }
+            if (reRollFourth) {
+                dRolls[3] = randGen(6);
+            }
+            if (reRollFifth) {
+                dRolls[4] = randGen(6);
+            } else {
+                std::cout << "Pick from the available dices! (1-5)" << '\n';
+            }
+
+            std::cout << dRolls[0];
+
+            // display new rolls after re-roll
+            for (int i = 0; i < 5; ++i) {
+                std::cout << '\n';
+            }
+            std::cout << "-------------------" << '\n';
+            std::cout << "| New rolls of turn " << turnCounter + 1 << " |" << '\n';
+            std::cout << "-------------------" << '\n';
+            for (int &dRoll : dRolls) {
+                std::cout << "| " << dRoll << " |";
+            }
+
+            wantsReRoll = false;
+        }
+
+        // 6. continue when player is done re-rolling, and we still have rounds left
         if (turnCounter < 3) {
             std::cout << '\n';
-            std::cout << "Enter 'x' to continue!" << '\n';
+            std::cout << "Enter 'x' to end your turn." << '\n';
 
             char usrInput{};
             std::cin >> usrInput;
@@ -161,7 +223,22 @@ int main() {
             for (int i = 0; i < 5; ++i) {
                 std::cout << '\n';
             }
-            std::cout << "The game is finished!";
+            std::cout << "The game is finished!" << '\n';
+            std::cout << '\n';
+
+            // 8. score the turn
+            int roundScore = totalOfAcesPoints + totalOfTwosPoints + totalOfThreesPoints + totalOfFoursPoints +
+                             totalOfFivesPoints + totalOfSixesPoints + threeOfAKindPoints + fourOfAKindPoints +
+                             fullHousePoints + smallStraightPoints + largeStraightPoints + yahtzeePoints + chancePoints;
+            std::cout << "-----------------------" << '\n';
+            std::cout << "| This Round's Score: " << roundScore << "|" << '\n';
+            std::cout << "-----------------------" << '\n';
+
+            // TODO: score full game later on
+
+            char usrInput{};
+            std::cout << "Enter anything to quit the program." << '\n';
+            std::cin >> usrInput;
         }
     }
 
